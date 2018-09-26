@@ -1,6 +1,6 @@
 # Usage
 
-Create a class that implements `UnZeroUn\DatagridBundleBundle\Datagrid\DatagridType`.
+Create a class that implements `UnZeroUn\DatagridBundle\Datagrid\DatagridType`.
 
 
 # todo

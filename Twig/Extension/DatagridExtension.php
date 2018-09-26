@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace UnZeroUn\DatagridBundle\Twig\Extension;
+namespace UnZeroUn\Datagrid\Twig\Extension;
 
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
-use UnZeroUn\DatagridBundle\Datagrid\Datagrid;
-use UnZeroUn\DatagridBundle\Datagrid\DatagridColumn;
+use UnZeroUn\Datagrid\Datagrid\Datagrid;
+use UnZeroUn\Datagrid\Datagrid\DatagridColumn;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Twig\Extension\AbstractExtension;

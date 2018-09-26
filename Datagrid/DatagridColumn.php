@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace UnZeroUn\DatagridBundle\Datagrid;
+namespace UnZeroUn\Datagrid\Datagrid;
 
-use UnZeroUn\DatagridBundle\Accessor\Accessor;
+use UnZeroUn\Datagrid\Accessor\Accessor;
 
 class DatagridColumn
 {

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace UnZeroUn\DatagridBundle\Datagrid;
+namespace UnZeroUn\Datagrid\Datagrid;
 
-use UnZeroUn\DatagridBundle\Accessor\Accessor;
-use UnZeroUn\DatagridBundle\Accessor\CallableAccessor;
-use UnZeroUn\DatagridBundle\Accessor\PropertyPathAccessor;
+use UnZeroUn\Datagrid\Accessor\Accessor;
+use UnZeroUn\Datagrid\Accessor\CallableAccessor;
+use UnZeroUn\Datagrid\Accessor\PropertyPathAccessor;
 use UnZeroUn\Sorter\Definition;
 
 final class DatagridBuilder extends Datagrid

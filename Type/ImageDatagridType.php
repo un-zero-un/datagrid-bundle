@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace UnZeroUn\DatagridBundle\Type;
+namespace UnZeroUn\Datagrid\Type;
 
 class ImageDatagridType
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace UnZeroUn\DatagridBundle\Datagrid;
+namespace UnZeroUn\Datagrid\Datagrid;
 
 final class DefaultActions
 {

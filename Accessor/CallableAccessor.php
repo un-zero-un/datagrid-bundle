@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace UnZeroUn\DatagridBundle\Accessor;
+namespace UnZeroUn\Datagrid\Accessor;
 
 class CallableAccessor implements Accessor
 {

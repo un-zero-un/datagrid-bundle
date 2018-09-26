@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace UnZeroUn\DatagridBundle\Datagrid;
+namespace UnZeroUn\Datagrid\Datagrid;
 
 use Doctrine\ORM\QueryBuilder;
 use Lexik\Bundle\FormFilterBundle\Filter\FilterBuilderUpdater;

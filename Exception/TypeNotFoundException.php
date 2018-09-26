@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace UnZeroUn\DatagridBundle\Exception;
+namespace UnZeroUn\Datagrid\Exception;
 
 class TypeNotFoundException extends \InvalidArgumentException
 {

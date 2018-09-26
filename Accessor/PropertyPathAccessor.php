@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace UnZeroUn\DatagridBundle\Accessor;
+namespace UnZeroUn\Datagrid\Accessor;
 
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 

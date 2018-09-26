@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace UnZeroUn\DatagridBundle;
+namespace UnZeroUn\Datagrid;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use UnZeroUn\DatagridBundle\Datagrid\DatagridType;
+use UnZeroUn\Datagrid\Datagrid\DatagridType;
 
 class UnZeroUnDatagridBundle extends Bundle
 {

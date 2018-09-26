@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace UnZeroUn\DatagridBundle\Datagrid;
+namespace UnZeroUn\Datagrid\Datagrid;
 
 use Doctrine\ORM\QueryBuilder;
 use Lexik\Bundle\FormFilterBundle\Filter\FilterBuilderUpdater;
 use Symfony\Component\Form\FormFactoryInterface;
-use UnZeroUn\DatagridBundle\Exception\TypeNotFoundException;
+use UnZeroUn\Datagrid\Exception\TypeNotFoundException;
 use UnZeroUn\Sorter\SorterFactory;
 
 class DatagridFactory
