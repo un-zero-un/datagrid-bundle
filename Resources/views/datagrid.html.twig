@@ -1,0 +1,58 @@
+<div class="flash-messages">
+    {{ display_flash_messages(constant('App\\Component\\FlashMessage::TYPE_INFO')) }}
+    {{ display_flash_messages(constant('App\\Component\\FlashMessage::TYPE_SUCCESS')) }}
+    {{ display_flash_messages(constant('App\\Component\\FlashMessage::TYPE_WARNING')) }}
+    {{ display_flash_messages(constant('App\\Component\\FlashMessage::TYPE_ERROR')) }}
+</div>
+
+{% if datagrid.processStatusKey is not null and datagrid.processStatusKey is not empty %}
+    {{ last_process_status(datagrid.processStatusKey) }}
+{% endif %}
+
+{% if datagrid.filterForm %}
+    {{ include('admin/datagrid/_filters.html.twig', {'form': datagrid.filterForm.createView()}, with_context=false) }}
+{% endif %}
+
+<div class="card">
+    <div class="card-header">
+        <i class="fa fa-align-justify"></i>
+        {{ datagrid.title }}
+    </div>
+
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                {% for column in datagrid.columns %}
+                    <th>
+                        {% if datagrid.sorter is not null and column.name in datagrid.sorter.fields %}
+                            {{ sorter_link(datagrid.sorter, column.name, column.label) }}
+                            {{ sorter_link(datagrid.sorter, column.name, '<i class="icon-arrow-up"></i>', 'ASC') }}
+                            {{ sorter_link(datagrid.sorter, column.name, '<i class="icon-arrow-down"></i>', 'DESC') }}
+                        {% else %}
+                            {{ column.label }}
+                        {% endif %}
+                    </th>
+                {% endfor %}
+                {% if datagrid.actions %}
+                    <th>Actions</th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in datagrid.results %}
+                {{ datagrid_row(datagrid, row) }}
+            {% endfor %}
+            </tbody>
+            {% if datagrid.paginationEnabled %}
+                <tfoot>
+                <tr>
+                    <td colspan="{{ datagrid.columns | length + 1 }}">
+                        {{ pagerfanta(datagrid.pager, 'twitter_bootstrap4_translated') }}
+                    </td>
+                </tr>
+                </tfoot>
+            {% endif %}
+        </table>
+    </div>
+</div>

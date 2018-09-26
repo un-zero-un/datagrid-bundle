@@ -1,0 +1,16 @@
+<tr>
+    {% for column in datagrid.columns %}
+        <td>
+            {{ datagrid_cell(datagrid, object, column) }}
+        </td>
+    {% endfor %}
+    {% if datagrid.actions %}
+        <td>
+            {{ include(
+                '@UnZeroUnDatagrid/datagrid/actions.html.twig',
+                { actions: datagrid.actions, object: object },
+                with_context=false
+            ) }}
+        </td>
+    {% endif %}
+</tr>

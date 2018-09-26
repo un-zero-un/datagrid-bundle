@@ -1,0 +1,34 @@
+{
+    "name":        "unzeroun/datagrid-bundle",
+    "description": "Composant permettant de modéliser des listes filtrable et triable",
+    "license":     "proprietary",
+    "type":        "symfony-bundle",
+    "authors":     [
+        {
+            "name":     "Yohan GIARELLI",
+            "email":    "yohan@un-zero-un.fr",
+            "homepage": "https://www.un-zero-un.fr"
+        },
+        {
+            "name":     "Julien POTTIER",
+            "email":    "julien.p@un-zero-un.fr",
+            "homepage": "https://www.un-zero-un.fr"
+        }
+    ],
+    "require":     {
+        "php":                             ">=7.1",
+        "symfony/form":                    "^4.1",
+        "symfony/http-kernel":             "^4.1",
+        "symfony/http-foundation":         "^4.1",
+        "symfony/property-access":         "^4.1",
+        "unzeroun/sorter":                 "^0.1.4",
+        "lexik/form-filter-bundle":        "^5.0",
+        "doctrine/orm":                    "^2.6",
+        "white-october/pagerfanta-bundle": "^1.2"
+    },
+    "autoload":    {
+        "psr-4": {
+            "UnZeroUn\\Datagrid\\": ""
+        }
+    }
+}

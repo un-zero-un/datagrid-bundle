@@ -1,0 +1,13 @@
+<div class="btn-group">
+    {% for action in actions %}
+        <a class="btn btn-sm{{ action.color is defined ? ' btn-' ~ action.color }}"
+           href="{{ path(action.route, {id: object.id}) }}" title="{{ action.label }}"
+           data-object-title="{{ object }}" {{ datagrid_action_attributes(action.attrs|default([])) }}>
+            {% if action.icon is defined %}
+                <i class="fa fa-{{ action.icon }}"></i>
+            {% endif %}
+            <span class="sr-only">{{ action.label }}</span>
+        </a>
+    {% endfor %}
+</div>
+

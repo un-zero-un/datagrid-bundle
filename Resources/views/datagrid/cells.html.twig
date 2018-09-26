@@ -1,0 +1,85 @@
+{% block datagrid_default_cell %}
+    <span>{{ value }}</span>
+{% endblock %}
+
+{% block datagrid_money_cell %}
+    <span>{{ value | format_money }}</span>
+{% endblock %}
+
+{% block datagrid_translated_string_cell %}
+    <span>{{ translated_value(value) }}</span>
+{% endblock %}
+
+{% block datagrid_datetime_cell %}
+    {{ value|localizeddate }}
+{% endblock %}
+
+{% block datagrid_collection_count_cell %}
+    {{ value|length }}
+{% endblock %}
+
+{% block datagrid_image_datagrid_type_cell %}
+    <img src="{{ value.url }}" alt="{{ value.alt }}">
+{% endblock %}
+
+{% block datagrid_array_cell %}
+    <ul>
+        {% for item in value %}
+            <li>{{ datagrid_cell_value(datagrid, object, item) }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+{% block datagrid_sales_order_status_cell %}
+    {% import 'admin/sales/macros.html.twig' as salesOrderMacros %}
+
+    {{ salesOrderMacros.status(value) }}
+{% endblock %}
+
+{% block datagrid_completion_cell %}
+    {% set completion = (value * 100) | round %}
+
+    <div class="flex">
+        <div class="progress progress-xs my-2">
+            <div class="progress-bar bg-success" style="width: {{ completion }}%"
+                 role="progressbar" aria-valuenow="{{ completion }}" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <div class="font-xs">{{ completion }}%</div>
+    </div>
+{% endblock %}
+
+
+{% block datagrid_error_rate_cell %}
+    {% set error_rate = (value * 100) | round %}
+
+    <div class="flex">
+        <div class="progress progress-xs my-2">
+            <div class="progress-bar bg-danger" style="width: {{ error_rate }}%"
+                 role="progressbar" aria-valuenow="{{ error_rate }}" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <div class="font-xs">{{ error_rate }}%</div>
+    </div>
+{% endblock %}
+
+{% block datagrid_process_status_key_cell %}
+    {% set display_name = display_process_status_key(value) %}
+    <a href="{{ path('messenger_process_statuses_show', {id: object.id}) }}" data-open-in-aside-panel>
+        {% if display_name != value %}
+            <abbr title="{{ value }}">{{ display_name }}</abbr>
+        {% else %}
+            {{ value }}
+        {% endif %}
+    </a>
+{% endblock %}
+
+{% block datagrid_product_name_cell %}
+    <a href="{{ path('admin_product_product_show', {id: object.id}) }}" data-open-in-aside-panel>
+        {{ translated_value(value) }}
+    </a>
+{% endblock %}
+
+{% block datagrid_sales_shipping_cell %}
+    {% include 'admin/sales/order/_shipping.html.twig' with {
+        shipping: value
+    } only %}
+{% endblock %}
