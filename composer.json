@@ -24,6 +24,7 @@
         "unzeroun/sorter":                 "^0.1.4",
         "lexik/form-filter-bundle":        "^5.0",
         "doctrine/orm":                    "^2.6",
+        "twig/extensions":                 "^1.5",
         "white-october/pagerfanta-bundle": "^1.2"
     },
     "autoload":    {
