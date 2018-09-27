@@ -1,14 +1,3 @@
-<div class="flash-messages">
-    {{ display_flash_messages(constant('App\\Component\\FlashMessage::TYPE_INFO')) }}
-    {{ display_flash_messages(constant('App\\Component\\FlashMessage::TYPE_SUCCESS')) }}
-    {{ display_flash_messages(constant('App\\Component\\FlashMessage::TYPE_WARNING')) }}
-    {{ display_flash_messages(constant('App\\Component\\FlashMessage::TYPE_ERROR')) }}
-</div>
-
-{% if datagrid.processStatusKey is not null and datagrid.processStatusKey is not empty %}
-    {{ last_process_status(datagrid.processStatusKey) }}
-{% endif %}
-
 {% if datagrid.filterForm %}
     {{ include('admin/datagrid/_filters.html.twig', {'form': datagrid.filterForm.createView()}, with_context=false) }}
 {% endif %}
