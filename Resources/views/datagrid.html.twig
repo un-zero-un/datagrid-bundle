@@ -1,47 +1,43 @@
-{% if datagrid.filterForm %}
-    {{ include('admin/datagrid/_filters.html.twig', {'form': datagrid.filterForm.createView()}, with_context=false) }}
-{% endif %}
+{% block datagrid_header %}
+    {{ datagrid_header(datagrid) }}
+{% endblock %}
 
-<div class="card">
-    <div class="card-header">
-        <i class="fa fa-align-justify"></i>
-        {{ datagrid.title }}
-    </div>
+{% block datagrid_filter %}
+    {% if datagrid.filterForm %}
+        {{ include('@UnZeroUnDatagrid/datagrid/filters.html.twig', {'form': datagrid.filterForm.createView()}, with_context=false) }}
+    {% endif %}
+{% endblock %}
 
-    <div class="card-body">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                {% for column in datagrid.columns %}
-                    <th>
-                        {% if datagrid.sorter is not null and column.name in datagrid.sorter.fields %}
-                            {{ sorter_link(datagrid.sorter, column.name, column.label) }}
-                            {{ sorter_link(datagrid.sorter, column.name, '<i class="icon-arrow-up"></i>', 'ASC') }}
-                            {{ sorter_link(datagrid.sorter, column.name, '<i class="icon-arrow-down"></i>', 'DESC') }}
-                        {% else %}
-                            {{ column.label }}
-                        {% endif %}
-                    </th>
-                {% endfor %}
-                {% if datagrid.actions %}
-                    <th>Actions</th>
-                {% endif %}
-            </tr>
-            </thead>
-            <tbody>
-            {% for row in datagrid.results %}
-                {{ datagrid_row(datagrid, row) }}
+{% block datagrid_list %}
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            {% for column in datagrid.columns %}
+                <th>
+                    {% if datagrid.sorter is not null and column.name in datagrid.sorter.fields %}
+                        {{ sorter_link(datagrid.sorter, column.name, column.label) }}
+                        {{ sorter_link(datagrid.sorter, column.name, '<i class="icon-arrow-up"></i>', 'ASC') }}
+                        {{ sorter_link(datagrid.sorter, column.name, '<i class="icon-arrow-down"></i>', 'DESC') }}
+                    {% else %}
+                        {{ column.label }}
+                    {% endif %}
+                </th>
             {% endfor %}
-            </tbody>
-            {% if datagrid.paginationEnabled %}
-                <tfoot>
-                <tr>
-                    <td colspan="{{ datagrid.columns | length + 1 }}">
-                        {{ pagerfanta(datagrid.pager, 'twitter_bootstrap4_translated') }}
-                    </td>
-                </tr>
-                </tfoot>
+            {% if datagrid.actions %}
+                <th>Actions</th>
             {% endif %}
-        </table>
-    </div>
-</div>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in datagrid.results %}
+            {{ datagrid_row(datagrid, row) }}
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block datagrid_pager %}
+    {% if datagrid.paginationEnabled %}
+        {{ pagerfanta(datagrid.pager, 'twitter_bootstrap4_translated') }}
+    {% endif %}
+{% endblock %}
