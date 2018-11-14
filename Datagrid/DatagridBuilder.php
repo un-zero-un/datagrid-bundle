@@ -111,6 +111,20 @@ final class DatagridBuilder extends Datagrid
         return $this;
     }
 
+    public function overrideSort(): self
+    {
+        $this->overrideSort = true;
+
+        return $this;
+    }
+
+    public function appendSort(): self
+    {
+        $this->overrideSort = false;
+
+        return $this;
+    }
+
     public function setFilterType(string $filterType): self
     {
         $this->filterType = $filterType;
@@ -161,6 +175,7 @@ final class DatagridBuilder extends Datagrid
         $datagrid->paginationEnabled = $this->paginationEnabled;
         $datagrid->globalActions     = $this->globalActions;
         $datagrid->processStatusKey  = $this->processStatusKey;
+        $datagrid->overrideSort      = $this->overrideSort;
 
         return $datagrid;
     }

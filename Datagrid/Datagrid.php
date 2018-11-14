@@ -83,6 +83,11 @@ class Datagrid
     private $sorter;
 
     /**
+     * @var bool
+     */
+    protected $overrideSort = true;
+
+    /**
      * @var Pagerfanta
      */
     private $pager;
@@ -115,7 +120,12 @@ class Datagrid
         }
 
         $this->sorter->handleRequest($request);
-        $this->sorter->sort($qb);
+        $this->sorter->sort(
+            $qb,
+            [
+                'override' => $this->overrideSort,
+            ]
+        );
 
         if (null !== $this->filterForm && $request->query->has($this->filterForm->getName())) {
             $this->filterForm->handleRequest($request);
