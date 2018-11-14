@@ -21,7 +21,7 @@
         "symfony/http-kernel":             "^4.1",
         "symfony/http-foundation":         "^4.1",
         "symfony/property-access":         "^4.1",
-        "unzeroun/sorter":                 "^0.1.4",
+        "unzeroun/sorter":                 "^0.2.0",
         "lexik/form-filter-bundle":        "^5.0",
         "doctrine/orm":                    "^2.6",
         "twig/extensions":                 "^1.5",
