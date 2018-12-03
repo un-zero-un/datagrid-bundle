@@ -7,6 +7,7 @@ namespace UnZeroUn\Datagrid\Datagrid;
 use UnZeroUn\Datagrid\Accessor\Accessor;
 use UnZeroUn\Datagrid\Accessor\CallableAccessor;
 use UnZeroUn\Datagrid\Accessor\PropertyPathAccessor;
+use UnZeroUn\Datagrid\Action\Action;
 use UnZeroUn\Sorter\Definition;
 
 final class DatagridBuilder extends Datagrid
@@ -55,51 +56,23 @@ final class DatagridBuilder extends Datagrid
         return $this;
     }
 
-    public function addAction(string $name, string $label, string $route, array $attrs = [], array $options = []): self
+    public function addAction(Action $action): self
     {
-        $defaultOptions = [];
-        if (defined(sprintf('%s::%s', DefaultActions::class, strtoupper($name)))) {
-            $defaultOptions = constant(sprintf('%s::%s', DefaultActions::class, strtoupper($name)));
-        }
-
-        $this->actions[$name] = array_merge(
-            $defaultOptions,
-            [
-                'name'    => $name,
-                'label'   => $label,
-                'route'   => $route,
-                'attrs'   => array_merge(
-                    isset($defaultOptions['attrs']) && is_array(
-                        $defaultOptions['attrs']
-                    ) ? $defaultOptions['attrs'] : [],
-                    $attrs
-                ),
-                'options' => isset($defaultOptions['options']) && is_array(
-                    $defaultOptions['options']
-                ) ? $defaultOptions['options'] : [],
-            ],
-            $options
-        );
+        $this->actions[] = $action;
 
         return $this;
     }
 
-    public function addGlobalAction(string $name, string $label, string $route, array $options = []): self
+    public function addGlobalAction(Action $action): self
     {
-        $defaultOptions = [];
-        if (defined(sprintf('%s::%s', DefaultActions::class, strtoupper($name)))) {
-            $defaultOptions = constant(sprintf('%s::%s', DefaultActions::class, strtoupper($name)));
-        }
+        $this->globalActions[] = $action;
 
-        $this->globalActions[$name] = array_merge(
-            $defaultOptions,
-            [
-                'name'  => $name,
-                'label' => $label,
-                'route' => $route,
-            ],
-            $options
-        );
+        return $this;
+    }
+
+    public function addMassAction(Action $action): self
+    {
+        $this->massActions[] = $action;
 
         return $this;
     }
@@ -176,6 +149,7 @@ final class DatagridBuilder extends Datagrid
         $datagrid->globalActions     = $this->globalActions;
         $datagrid->processStatusKey  = $this->processStatusKey;
         $datagrid->overrideSort      = $this->overrideSort;
+        $datagrid->massActions       = $this->massActions;
 
         return $datagrid;
     }

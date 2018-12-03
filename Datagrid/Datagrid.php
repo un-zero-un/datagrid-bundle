@@ -11,6 +11,8 @@ use Pagerfanta\Pagerfanta;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use UnZeroUn\Datagrid\Action\Action;
 use UnZeroUn\Sorter\Definition;
 use UnZeroUn\Sorter\Sorter;
 use UnZeroUn\Sorter\SorterFactory;
@@ -63,14 +65,19 @@ class Datagrid
     protected $paginationEnabled = true;
 
     /**
-     * @var string[][]
+     * @var Action[]
      */
     protected $actions = [];
 
     /**
-     * @var string[][]
+     * @var Action[]
      */
     protected $globalActions = [];
+
+    /**
+     * @var Action[]
+     */
+    protected $massActions = [];
 
     /**
      * @var array
@@ -110,7 +117,7 @@ class Datagrid
         $this->filterBuilderUpdater = $filterBuilderUpdater;
     }
 
-    public function handleRequest(Request $request)
+    public function handleRequest(Request $request): ?Response
     {
         $qb           = $this->queryBuilder;
         $this->sorter = $this->sorterFactory->createSorter($this->sortDefinition);
@@ -135,6 +142,8 @@ class Datagrid
         if ($this->isPaginationEnabled()) {
             $this->getPager()->setCurrentPage($request->query->get('page', 1));
         }
+
+        return null;
     }
 
     public function isPaginationEnabled(): bool
@@ -156,11 +165,17 @@ class Datagrid
         return $this->columns;
     }
 
+    /**
+     * @return Action[]
+     */
     public function getActions(): array
     {
         return $this->actions;
     }
 
+    /**
+     * @return Action[]
+     */
     public function getGlobalActions(): array
     {
         return $this->globalActions;
@@ -189,6 +204,15 @@ class Datagrid
     public function getFilterForm(): ?FormInterface
     {
         return $this->filterForm;
+    }
+
+    public function getMassActionForm(): ?FormInterface
+    {
+        if (count($this->massActions) === 0) {
+            return null;
+        }
+
+//        return $this->formFactory->createNamed('', );
     }
 
     /**

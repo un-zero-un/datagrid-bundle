@@ -2,8 +2,11 @@
     <ul class="datagrid-gloc-actions">
         {% for action in actions %}
             <li>
-                <a class="btn" href="{{ path(action.route, action.options.route_params | default({})) }}">
-                    <i class="fa fa-{{ action.icon }}"></i> {{ action.label }}
+                <a class="btn" href="{{ action.url() }}">
+                    {% if action.icon is not null %}
+                        <i class="fa fa-{{ action.icon }}"></i>
+                    {% endif %}
+                    {{ action.label }}
                 </a>
             </li>
         {% endfor %}
