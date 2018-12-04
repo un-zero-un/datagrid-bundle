@@ -74,9 +74,10 @@ class DatagridExtension extends AbstractExtension implements InitRuntimeInterfac
         return $this->twig->render(
             '@UnZeroUnDatagrid/datagrid/row.html.twig',
             [
-                'datagrid'        => $datagrid,
-                'object'          => $realObject,
-                'additional_data' => $additionalData,
+                'datagrid'       => $datagrid,
+                'object'         => $realObject,
+                'additionalData' => $additionalData,
+                'massActionForm' => $datagrid->getMassActionForm()->createView(),
             ]
         );
     }

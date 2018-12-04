@@ -8,6 +8,7 @@ use UnZeroUn\Datagrid\Accessor\Accessor;
 use UnZeroUn\Datagrid\Accessor\CallableAccessor;
 use UnZeroUn\Datagrid\Accessor\PropertyPathAccessor;
 use UnZeroUn\Datagrid\Action\Action;
+use UnZeroUn\Datagrid\Action\MassAction;
 use UnZeroUn\Sorter\Definition;
 
 final class DatagridBuilder extends Datagrid
@@ -70,7 +71,7 @@ final class DatagridBuilder extends Datagrid
         return $this;
     }
 
-    public function addMassAction(Action $action): self
+    public function addMassAction(MassAction $action): self
     {
         $this->massActions[] = $action;
 

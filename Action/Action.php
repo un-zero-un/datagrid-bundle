@@ -120,9 +120,4 @@ class Action
 
         return $this;
     }
-
-    public static function create(string $label, Url $url)
-    {
-        return new static($label, $url);
-    }
 }

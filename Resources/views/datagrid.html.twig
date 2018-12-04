@@ -9,9 +9,15 @@
 {% endblock %}
 
 {% block datagrid_list %}
+    {% if datagrid.massActionFormView %}
+        {{ form_start(datagrid.massActionFormView) }}
+    {% endif %}
     <table class="table table-striped">
         <thead>
         <tr>
+            {% if datagrid.getMassActionForm %}
+                <th></th>
+            {% endif %}
             {% for column in datagrid.columns %}
                 <th>
                     {% if datagrid.sorter is not null and column.name in datagrid.sorter.fields %}
@@ -23,7 +29,7 @@
                     {% endif %}
                 </th>
             {% endfor %}
-            {% if datagrid.actions %}
+            {% if (datagrid.actions | length) > 0 %}
                 <th>Actions</th>
             {% endif %}
         </tr>
@@ -34,6 +40,16 @@
         {% endfor %}
         </tbody>
     </table>
+    {% if datagrid.massActionFormView %}
+        <div class="datagrid-mass-actions">
+            {{ form_row(datagrid.massActionFormView.action) }}
+            {{ form_row(datagrid.massActionFormView.submit) }}
+        </div>
+
+        {% if datagrid.massActionFormView %}
+            {{ form_end(datagrid.massActionFormView) }}
+        {% endif %}
+    {% endif %}
 {% endblock %}
 
 {% block datagrid_pager %}

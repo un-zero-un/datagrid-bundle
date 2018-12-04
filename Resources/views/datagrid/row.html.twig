@@ -1,4 +1,13 @@
-<tr>
+<tr class="{% block row_class '' %}">
+    {% if massActionForm %}
+        <td>
+            {% set formItem = datagrid.massActionItemForm(object) %}
+            {% if formItem is not null %}
+                {{ form_widget(formItem) }}
+            {% endif %}
+        </td>
+    {% endif %}
+
     {% for column in datagrid.columns %}
         <td>
             {{ datagrid_cell(datagrid, object, column) }}

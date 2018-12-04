@@ -10,9 +10,13 @@ use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use UnZeroUn\Datagrid\Action\Action;
+use UnZeroUn\Datagrid\Action\MassAction;
+use UnZeroUn\Datagrid\Datagrid\Form\Model\DatagridMassAction;
+use UnZeroUn\Datagrid\Datagrid\Form\Type\DatagridMassActionType;
 use UnZeroUn\Sorter\Definition;
 use UnZeroUn\Sorter\Sorter;
 use UnZeroUn\Sorter\SorterFactory;
@@ -75,9 +79,19 @@ class Datagrid
     protected $globalActions = [];
 
     /**
-     * @var Action[]
+     * @var MassAction[]
      */
     protected $massActions = [];
+
+    /**
+     * @var FormInterface
+     */
+    private $massActionForm;
+
+    /**
+     * @var FormView
+     */
+    private $massActionFormView;
 
     /**
      * @var array
@@ -143,6 +157,22 @@ class Datagrid
             $this->getPager()->setCurrentPage($request->query->get('page', 1));
         }
 
+        $massActionForm = $this->getMassActionForm();
+        if (null !== $massActionForm) {
+            if ($massActionForm->handleRequest($request) && $massActionForm->isSubmitted()) {
+                if ($massActionForm->isValid()) {
+                    /** @var DatagridMassAction $data */
+                    $data = $massActionForm->getData();
+
+                    $response = $data->getAction()->process($data->getItems());
+
+                    if ($response instanceof Response) {
+                        return $response;
+                    }
+                }
+            }
+        }
+
         return null;
     }
 
@@ -206,13 +236,70 @@ class Datagrid
         return $this->filterForm;
     }
 
+    /**
+     * @return MassAction[]
+     */
+    public function getMassActions(): array
+    {
+        return $this->massActions;
+    }
+
     public function getMassActionForm(): ?FormInterface
     {
-        if (count($this->massActions) === 0) {
+        if (null === $this->massActionForm) {
+            if (count($this->massActions) === 0) {
+                return null;
+            }
+
+            $items = $this->getResults();
+
+            if (!is_array($items)) {
+                $items = clone $items;
+            }
+
+            $this->massActionForm = $this->formFactory->createNamed(
+                'mass_action',
+                DatagridMassActionType::class,
+                null,
+                [
+                    'items'   => $items,
+                    'actions' => $this->getMassActions(),
+                    'method'  => 'POST',
+                ]
+            );
+        }
+
+        return $this->massActionForm;
+    }
+
+    public function getMassActionFormView(): ?FormView
+    {
+        if (null === $this->massActionFormView) {
+            if (null === $this->getMassActionForm()) {
+                return null;
+            }
+
+            $this->massActionFormView = $this->getMassActionForm()->createView();
+        }
+
+        return $this->massActionFormView;
+    }
+
+    public function getMassActionItemForm($item): ?FormView
+    {
+        $formView = $this->getMassActionFormView();
+
+        if (null === $formView) {
             return null;
         }
 
-//        return $this->formFactory->createNamed('', );
+        foreach ($formView['items'] as $formItem) {
+            if ($formItem->vars['label'] === (string)$item) {
+                return $formItem;
+            }
+        }
+
+        return null;
     }
 
     /**
