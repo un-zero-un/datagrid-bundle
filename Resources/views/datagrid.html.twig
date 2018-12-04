@@ -10,12 +10,15 @@
 
 {% block datagrid_list %}
     {% if datagrid.massActionFormView %}
+        {% form_theme datagrid.massActionFormView '@UnZeroUnDatagrid/mass_action_form_theme.html.twig' %}
+    {% endif %}
+    {% if datagrid.massActionFormView %}
         {{ form_start(datagrid.massActionFormView) }}
     {% endif %}
     <table class="table table-striped">
         <thead>
         <tr>
-            {% if datagrid.getMassActionForm %}
+            {% if datagrid.massActionForm %}
                 <th></th>
             {% endif %}
             {% for column in datagrid.columns %}

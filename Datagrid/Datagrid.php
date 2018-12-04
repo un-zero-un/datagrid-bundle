@@ -251,18 +251,12 @@ class Datagrid
                 return null;
             }
 
-            $items = $this->getResults();
-
-            if (!is_array($items)) {
-                $items = clone $items;
-            }
-
             $this->massActionForm = $this->formFactory->createNamed(
                 'mass_action',
                 DatagridMassActionType::class,
                 null,
                 [
-                    'items'   => $items,
+                    'items'   => $this->getResults(),
                     'actions' => $this->getMassActions(),
                     'method'  => 'POST',
                 ]
