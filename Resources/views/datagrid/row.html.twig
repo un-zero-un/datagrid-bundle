@@ -1,7 +1,7 @@
 <tr class="{% block row_class '' %}">
     {% if massActionForm %}
         <td>
-            {% set formItem = datagrid.massActionItemForm(object) %}
+            {% set formItem = datagrid.batchActionItemForm(object) %}
             {% if formItem is not null %}
                 {{ form_widget(formItem) }}
             {% endif %}

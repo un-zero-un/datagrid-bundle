@@ -8,7 +8,7 @@ use UnZeroUn\Datagrid\Accessor\Accessor;
 use UnZeroUn\Datagrid\Accessor\CallableAccessor;
 use UnZeroUn\Datagrid\Accessor\PropertyPathAccessor;
 use UnZeroUn\Datagrid\Action\Action;
-use UnZeroUn\Datagrid\Action\MassAction;
+use UnZeroUn\Datagrid\Action\BatchAction;
 use UnZeroUn\Sorter\Definition;
 
 final class DatagridBuilder extends Datagrid
@@ -71,9 +71,9 @@ final class DatagridBuilder extends Datagrid
         return $this;
     }
 
-    public function addMassAction(MassAction $action): self
+    public function addBatchAction(BatchAction $action): self
     {
-        $this->massActions[] = $action;
+        $this->batchActions[] = $action;
 
         return $this;
     }
@@ -150,7 +150,7 @@ final class DatagridBuilder extends Datagrid
         $datagrid->globalActions     = $this->globalActions;
         $datagrid->processStatusKey  = $this->processStatusKey;
         $datagrid->overrideSort      = $this->overrideSort;
-        $datagrid->massActions       = $this->massActions;
+        $datagrid->batchActions      = $this->batchActions;
 
         return $datagrid;
     }

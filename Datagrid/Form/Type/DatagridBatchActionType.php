@@ -10,10 +10,10 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use UnZeroUn\Datagrid\Action\MassAction;
-use UnZeroUn\Datagrid\Datagrid\Form\Model\DatagridMassAction;
+use UnZeroUn\Datagrid\Action\BatchAction;
+use UnZeroUn\Datagrid\Datagrid\Form\Model\DatagridBatchAction;
 
-class DatagridMassActionType extends AbstractType
+class DatagridBatchActionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -56,7 +56,7 @@ class DatagridMassActionType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => DatagridMassAction::class,
+                'data_class' => DatagridBatchAction::class,
             ]
         );
 
@@ -74,11 +74,11 @@ class DatagridMassActionType extends AbstractType
             'actions',
             function (OptionsResolver $resolver, iterable $actions) {
                 foreach ($actions as $action) {
-                    if (!$action instanceof MassAction) {
+                    if (!$action instanceof BatchAction) {
                         throw new InvalidTypeException(
                             sprintf(
                                 'config "actions" must be an iterable collection of "%s" instances',
-                                MassAction::class
+                                BatchAction::class
                             )
                         );
                     }

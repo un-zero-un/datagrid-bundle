@@ -6,5 +6,5 @@ namespace UnZeroUn\Datagrid\Action\Url;
 
 interface Url
 {
-    public function getUrl(...$args): string;
+    public function getUrl(array $context = []): string;
 }

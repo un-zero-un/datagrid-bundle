@@ -14,9 +14,9 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use UnZeroUn\Datagrid\Action\Action;
-use UnZeroUn\Datagrid\Action\MassAction;
-use UnZeroUn\Datagrid\Datagrid\Form\Model\DatagridMassAction;
-use UnZeroUn\Datagrid\Datagrid\Form\Type\DatagridMassActionType;
+use UnZeroUn\Datagrid\Action\BatchAction;
+use UnZeroUn\Datagrid\Datagrid\Form\Model\DatagridBatchAction;
+use UnZeroUn\Datagrid\Datagrid\Form\Type\DatagridBatchActionType;
 use UnZeroUn\Sorter\Definition;
 use UnZeroUn\Sorter\Sorter;
 use UnZeroUn\Sorter\SorterFactory;
@@ -79,19 +79,19 @@ class Datagrid
     protected $globalActions = [];
 
     /**
-     * @var MassAction[]
+     * @var BatchAction[]
      */
-    protected $massActions = [];
+    protected $batchActions = [];
 
     /**
      * @var FormInterface
      */
-    private $massActionForm;
+    private $batchActionForm;
 
     /**
      * @var FormView
      */
-    private $massActionFormView;
+    private $batchActionFormView;
 
     /**
      * @var array
@@ -149,7 +149,7 @@ class Datagrid
         );
 
         if (null !== $this->filterForm && $request->query->has($this->filterForm->getName())) {
-            $this->filterForm->handleRequest($request);
+            $this->filterForm->submit($request->query->get($this->filterForm->getName()));
             $this->filterBuilderUpdater->addFilterConditions($this->filterForm, $qb);
         }
 
@@ -157,12 +157,12 @@ class Datagrid
             $this->getPager()->setCurrentPage($request->query->get('page', 1));
         }
 
-        $massActionForm = $this->getMassActionForm();
-        if (null !== $massActionForm) {
-            if ($massActionForm->handleRequest($request) && $massActionForm->isSubmitted()) {
-                if ($massActionForm->isValid()) {
-                    /** @var DatagridMassAction $data */
-                    $data = $massActionForm->getData();
+        $batchActionForm = $this->getBatchActionForm();
+        if (null !== $batchActionForm) {
+            if ($batchActionForm->handleRequest($request) && $batchActionForm->isSubmitted()) {
+                if ($batchActionForm->isValid()) {
+                    /** @var DatagridBatchAction $data */
+                    $data = $batchActionForm->getData();
 
                     $response = $data->getAction()->process($data->getItems());
 
@@ -237,51 +237,51 @@ class Datagrid
     }
 
     /**
-     * @return MassAction[]
+     * @return BatchAction[]
      */
-    public function getMassActions(): array
+    public function getBatchActions(): array
     {
-        return $this->massActions;
+        return $this->batchActions;
     }
 
-    public function getMassActionForm(): ?FormInterface
+    public function getBatchActionForm(): ?FormInterface
     {
-        if (null === $this->massActionForm) {
-            if (count($this->massActions) === 0) {
+        if (null === $this->batchActionForm) {
+            if (count($this->batchActions) === 0) {
                 return null;
             }
 
-            $this->massActionForm = $this->formFactory->createNamed(
-                'mass_action',
-                DatagridMassActionType::class,
+            $this->batchActionForm = $this->formFactory->createNamed(
+                'batch_action',
+                DatagridBatchActionType::class,
                 null,
                 [
                     'items'   => $this->getResults(),
-                    'actions' => $this->getMassActions(),
+                    'actions' => $this->getBatchActions(),
                     'method'  => 'POST',
                 ]
             );
         }
 
-        return $this->massActionForm;
+        return $this->batchActionForm;
     }
 
-    public function getMassActionFormView(): ?FormView
+    public function getBatchActionFormView(): ?FormView
     {
-        if (null === $this->massActionFormView) {
-            if (null === $this->getMassActionForm()) {
+        if (null === $this->batchActionFormView) {
+            if (null === $this->getBatchActionForm()) {
                 return null;
             }
 
-            $this->massActionFormView = $this->getMassActionForm()->createView();
+            $this->batchActionFormView = $this->getBatchActionForm()->createView();
         }
 
-        return $this->massActionFormView;
+        return $this->batchActionFormView;
     }
 
-    public function getMassActionItemForm($item): ?FormView
+    public function getBatchActionItemForm($item): ?FormView
     {
-        $formView = $this->getMassActionFormView();
+        $formView = $this->getBatchActionFormView();
 
         if (null === $formView) {
             return null;

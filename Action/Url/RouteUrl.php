@@ -41,14 +41,14 @@ class RouteUrl implements Url
         return $this->routeName;
     }
 
-    public function getUrl(...$args): string
+    public function getUrl(array $context = []): string
     {
         $routeParameters = [];
 
         if (is_array($this->routeParameters)) {
             $routeParameters = $this->routeParameters;
         } elseif (is_callable($this->routeParameters)) {
-            $routeParameters = call_user_func_array($this->routeParameters, $args);
+            $routeParameters = call_user_func_array($this->routeParameters, $context);
 
             if (!is_array($routeParameters)) {
                 throw new \Exception('$routeParameters callable must return an array');

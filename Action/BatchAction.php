@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace UnZeroUn\Datagrid\Action;
 
 use Symfony\Component\HttpFoundation\Response;
-use UnZeroUn\Datagrid\Action\Url\Url;
 
-class MassAction
+class BatchAction
 {
     /**
      * @var string

@@ -16,7 +16,7 @@ class AbsoluteUrl implements Url
         $this->url = $url;
     }
 
-    public function getUrl(...$args): string
+    public function getUrl(array $context = []): string
     {
         return $this->url;
     }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace UnZeroUn\Datagrid\Action;
 
-use Symfony\Component\HttpFoundation\ParameterBag;
 use UnZeroUn\Datagrid\Action\Url\Url;
 
 class Action
@@ -15,12 +14,12 @@ class Action
     private $label;
 
     /**
-     * @var ParameterBag
+     * @var array
      */
     private $classes;
 
     /**
-     * @var ParameterBag
+     * @var array
      */
     private $attributes;
 
@@ -39,7 +38,7 @@ class Action
         $this->label      = $label;
         $this->url        = $url;
         $this->classes    = [];
-        $this->attributes = new ParameterBag();
+        $this->attributes = [];
     }
 
     public function getLabel(): string
@@ -47,9 +46,9 @@ class Action
         return $this->label;
     }
 
-    public function getUrl(...$args): string
+    public function getUrl(array $context = []): string
     {
-        return $this->url->getUrl(...$args);
+        return $this->url->getUrl($context);
     }
 
     public function addClass(string $class): self
@@ -78,19 +77,21 @@ class Action
 
     public function addAttribute(string $attributeName, $attributeValue): self
     {
-        $this->attributes->set($attributeName, $attributeValue);
+        $this->attributes[$attributeName] = $attributeValue;
 
         return $this;
     }
 
     public function removeAttribute(string $attributeName): self
     {
-        $this->attributes->remove($attributeName);
+        if (isset($this->attributes[$attributeName])) {
+            unset($this->attributes[$attributeName]);
+        }
 
         return $this;
     }
 
-    public function getAttributes(): ParameterBag
+    public function getAttributes(): array
     {
         return $this->attributes;
     }

@@ -77,7 +77,7 @@ class DatagridExtension extends AbstractExtension implements InitRuntimeInterfac
                 'datagrid'       => $datagrid,
                 'object'         => $realObject,
                 'additionalData' => $additionalData,
-                'massActionForm' => $datagrid->getMassActionFormView(),
+                'massActionForm' => $datagrid->getBatchActionFormView(),
             ]
         );
     }

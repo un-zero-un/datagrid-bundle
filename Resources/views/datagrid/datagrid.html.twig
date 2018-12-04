@@ -1,15 +1,15 @@
-{% if datagrid.massActionFormView %}
-    {% form_theme datagrid.massActionFormView '@UnZeroUnDatagrid/mass_action_form_theme.html.twig' %}
+{% if datagrid.batchActionFormView %}
+    {% form_theme datagrid.batchActionFormView '@UnZeroUnDatagrid/batch_action_form_theme.html.twig' %}
 {% endif %}
 
-{% if datagrid.massActionFormView %}
-    {{ form_start(datagrid.massActionFormView) }}
+{% if datagrid.batchActionFormView %}
+    {{ form_start(datagrid.batchActionFormView) }}
 {% endif %}
 
 <table class="table table-striped">
     <thead>
     <tr>
-        {% if datagrid.massActionForm %}
+        {% if datagrid.batchActionForm %}
             <th></th>
         {% endif %}
         {% for column in datagrid.columns %}
@@ -35,13 +35,13 @@
     </tbody>
 </table>
 
-{% if datagrid.massActionFormView %}
+{% if datagrid.batchActionFormView %}
     <div class="datagrid-mass-actions">
-        {{ form_row(datagrid.massActionFormView.action) }}
-        {{ form_row(datagrid.massActionFormView.submit) }}
+        {{ form_row(datagrid.batchActionFormView.action) }}
+        {{ form_row(datagrid.batchActionFormView.submit) }}
     </div>
 
-    {% if datagrid.massActionFormView %}
-        {{ form_end(datagrid.massActionFormView) }}
+    {% if datagrid.batchActionFormView %}
+        {{ form_end(datagrid.batchActionFormView) }}
     {% endif %}
 {% endif %}

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace UnZeroUn\Datagrid\Datagrid\Form\Model;
 
-use UnZeroUn\Datagrid\Action\MassAction;
+use UnZeroUn\Datagrid\Action\BatchAction;
 
-class DatagridMassAction
+class DatagridBatchAction
 {
     /**
      * @var array
@@ -14,7 +14,7 @@ class DatagridMassAction
     private $items;
 
     /**
-     * @var MassAction
+     * @var BatchAction
      */
     private $action;
 
@@ -33,12 +33,12 @@ class DatagridMassAction
         $this->items = $items;
     }
 
-    public function getAction(): ?MassAction
+    public function getAction(): ?BatchAction
     {
         return $this->action;
     }
 
-    public function setAction(MassAction $action): void
+    public function setAction(BatchAction $action): void
     {
         $this->action = $action;
     }

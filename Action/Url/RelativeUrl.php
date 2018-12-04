@@ -21,7 +21,7 @@ class RelativeUrl implements Url
         return $this->uri;
     }
 
-    public function getUrl(...$args): string
+    public function getUrl(array $context = []): string
     {
         return $this->getUri();
     }
