@@ -40,7 +40,7 @@ class ActionUrlBuilder
         return new AbsoluteUrl($url);
     }
 
-    public function routeUrl(string $routeName, ?RouteParameters $routeParameters = null): RouteUrl
+    public function routeUrl(string $routeName, $routeParameters = []): RouteUrl
     {
         return new RouteUrl($this->urlGenerator, $routeName, $routeParameters);
     }

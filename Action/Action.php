@@ -107,16 +107,21 @@ class Action
         return $this->icon;
     }
 
-    public function btn(string $type): self
+    public function btn(string $type, ?string $size = null): self
     {
-        $this->addClass('btn')->addClass('btn-' . $type);
+        $this->addClass('btn')
+            ->addClass('btn-' . $type);
+
+        if (null !== $size) {
+            $this->addClass('btn-'.$size);
+        }
 
         return $this;
     }
 
-    public function btnOutline(string $type): self
+    public function btnOutline(string $type, ?string $size = null): self
     {
-        $this->addClass('btn')->addClass('btn-outline-' . $type);
+        $this->btn('outline-'.$type, $size);
 
         return $this;
     }

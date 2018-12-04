@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace UnZeroUn\Datagrid\Action\Url;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use UnZeroUn\Datagrid\Action\Route\Parameters\RouteParameters;
 
 class RouteUrl implements Url
 {
@@ -15,7 +14,7 @@ class RouteUrl implements Url
     private $routeName;
 
     /**
-     * @var null|RouteParameters
+     * @var array|callable
      */
     private $routeParameters;
 
@@ -26,8 +25,12 @@ class RouteUrl implements Url
 
     public function __construct(UrlGeneratorInterface $urlGenerator,
                                 string $routeName,
-                                ?RouteParameters $routeParameters = null)
+                                $routeParameters = [])
     {
+        if (!is_array($routeParameters) && !is_callable($routeParameters)) {
+            throw new \InvalidArgumentException('$routeParameters must be an array or a callable');
+        }
+
         $this->urlGenerator    = $urlGenerator;
         $this->routeName       = $routeName;
         $this->routeParameters = $routeParameters;
@@ -38,17 +41,18 @@ class RouteUrl implements Url
         return $this->routeName;
     }
 
-    public function getRouteParamsResolver(): ?RouteParameters
-    {
-        return $this->routeParameters;
-    }
-
     public function getUrl(...$args): string
     {
         $routeParameters = [];
 
-        if (null !== $this->routeParameters) {
-            $routeParameters = array_merge($routeParameters, $this->routeParameters->resolve(...$args));
+        if (is_array($this->routeParameters)) {
+            $routeParameters = $this->routeParameters;
+        } elseif (is_callable($this->routeParameters)) {
+            $routeParameters = call_user_func_array($this->routeParameters, $args);
+
+            if (!is_array($routeParameters)) {
+                throw new \Exception('$routeParameters callable must return an array');
+            }
         }
 
         return $this->urlGenerator->generate($this->routeName, $routeParameters);

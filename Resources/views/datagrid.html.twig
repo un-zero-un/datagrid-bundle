@@ -9,50 +9,7 @@
 {% endblock %}
 
 {% block datagrid_list %}
-    {% if datagrid.massActionFormView %}
-        {% form_theme datagrid.massActionFormView '@UnZeroUnDatagrid/mass_action_form_theme.html.twig' %}
-    {% endif %}
-    {% if datagrid.massActionFormView %}
-        {{ form_start(datagrid.massActionFormView) }}
-    {% endif %}
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            {% if datagrid.massActionForm %}
-                <th></th>
-            {% endif %}
-            {% for column in datagrid.columns %}
-                <th>
-                    {% if datagrid.sorter is not null and column.name in datagrid.sorter.fields %}
-                        {{ sorter_link(datagrid.sorter, column.name, column.label) }}
-                        {{ sorter_link(datagrid.sorter, column.name, '<i class="icon-arrow-up"></i>', 'ASC') }}
-                        {{ sorter_link(datagrid.sorter, column.name, '<i class="icon-arrow-down"></i>', 'DESC') }}
-                    {% else %}
-                        {{ column.label }}
-                    {% endif %}
-                </th>
-            {% endfor %}
-            {% if (datagrid.actions | length) > 0 %}
-                <th>Actions</th>
-            {% endif %}
-        </tr>
-        </thead>
-        <tbody>
-        {% for row in datagrid.results %}
-            {{ datagrid_row(datagrid, row) }}
-        {% endfor %}
-        </tbody>
-    </table>
-    {% if datagrid.massActionFormView %}
-        <div class="datagrid-mass-actions">
-            {{ form_row(datagrid.massActionFormView.action) }}
-            {{ form_row(datagrid.massActionFormView.submit) }}
-        </div>
-
-        {% if datagrid.massActionFormView %}
-            {{ form_end(datagrid.massActionFormView) }}
-        {% endif %}
-    {% endif %}
+    {% include '@UnZeroUnDatagrid/datagrid/datagrid.html.twig' with {datagrid: datagrid} only %}
 {% endblock %}
 
 {% block datagrid_pager %}
