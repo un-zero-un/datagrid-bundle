@@ -24,7 +24,7 @@ class Action
     private $attributes;
 
     /**
-     * @var string|null
+     * @var ActionIcon|null
      */
     private $icon;
 
@@ -96,34 +96,15 @@ class Action
         return $this->attributes;
     }
 
-    public function setIcon(?string $icon): self
+    public function setIcon(ActionIcon $icon): self
     {
         $this->icon = $icon;
 
         return $this;
     }
 
-    public function getIcon(): ?string
+    public function getIcon(): ?ActionIcon
     {
         return $this->icon;
-    }
-
-    public function btn(string $type, ?string $size = null): self
-    {
-        $this->addClass('btn')
-            ->addClass('btn-' . $type);
-
-        if (null !== $size) {
-            $this->addClass('btn-'.$size);
-        }
-
-        return $this;
-    }
-
-    public function btnOutline(string $type, ?string $size = null): self
-    {
-        $this->btn('outline-'.$type, $size);
-
-        return $this;
     }
 }

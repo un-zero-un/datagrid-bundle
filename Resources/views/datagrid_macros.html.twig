@@ -1,4 +1,5 @@
 {% macro actions(actions, justifyContent = 'justify-content-start') %}
+    {% import _self as datagrid_macros %}
     <ul class="navbar-nav mr-auto w-100 {{ justifyContent }}">
         {% for action in actions %}
             <li class="nav-item">
@@ -6,11 +7,15 @@
                     {% for attributeName, attributeValue in action.attributes %}{% if attributeValue is null %}{{ attributeName }}{% else %}{{ attributeName }}="{{ attributeValue }}"{% endif %}{% endfor %}
                 >
                     {% if action.icon is not null %}
-                        <i class="{{ action.icon }}"></i>
+                        {{ datagrid_macros.action_icon(action.icon.type, action.icon.icon) }}
                     {% endif %}
                     {{ action.label }}
                 </a>
             </li>
         {% endfor %}
     </ul>
+{% endmacro %}
+
+{% macro action_icon(type, icon) %}
+
 {% endmacro %}
