@@ -1,0 +1,47 @@
+{% if datagrid.batchActionFormView %}
+    {% form_theme datagrid.batchActionFormView '@UnZeroUnDatagrid/batch_action_form_theme.html.twig' %}
+{% endif %}
+
+{% if datagrid.batchActionFormView %}
+    {{ form_start(datagrid.batchActionFormView) }}
+{% endif %}
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        {% if datagrid.batchActionForm %}
+            <th></th>
+        {% endif %}
+        {% for column in datagrid.columns %}
+            <th>
+                {% if datagrid.sorter is not null and column.name in datagrid.sorter.fields %}
+                    {{ sorter_link(datagrid.sorter, column.name, column.label) }}
+                    {{ sorter_link(datagrid.sorter, column.name, '<i class="icon-arrow-up"></i>', 'ASC') }}
+                    {{ sorter_link(datagrid.sorter, column.name, '<i class="icon-arrow-down"></i>', 'DESC') }}
+                {% else %}
+                    {{ column.label }}
+                {% endif %}
+            </th>
+        {% endfor %}
+        {% if (datagrid.actions | length) > 0 %}
+            <th>Actions</th>
+        {% endif %}
+    </tr>
+    </thead>
+    <tbody>
+    {% for row in datagrid.results %}
+        {{ datagrid_row(datagrid, row) }}
+    {% endfor %}
+    </tbody>
+</table>
+
+{% if datagrid.batchActionFormView %}
+    <div class="datagrid-mass-actions">
+        {{ form_row(datagrid.batchActionFormView.action) }}
+        {{ form_row(datagrid.batchActionFormView.submit) }}
+    </div>
+
+    {% if datagrid.batchActionFormView %}
+        {{ form_end(datagrid.batchActionFormView) }}
+    {% endif %}
+{% endif %}

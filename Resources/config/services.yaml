@@ -1,6 +1,8 @@
 services:
     _defaults:
         public: false
+        autowire: true
+        autoconfigure: true
 
     UnZeroUn\Datagrid\Datagrid\DatagridFactory:
         arguments:
@@ -9,12 +11,12 @@ services:
             - '@Lexik\Bundle\FormFilterBundle\Filter\FilterBuilderUpdater'
             - !tagged admin.datagrid.type
 
-    UnZeroUn\Datagrid\PropertyAccessor:
-        class: Symfony\Component\PropertyAccess\PropertyAccessor
+    UnZeroUn\Datagrid\Action\ActionUrlBuilder:
+        public: true
 
     UnZeroUn\Datagrid\Twig\Extension\DatagridExtension:
         arguments:
-            - '@UnZeroUn\Datagrid\PropertyAccessor'
+            - '@property_accessor'
         tags:
             - { name: twig.extension }
 

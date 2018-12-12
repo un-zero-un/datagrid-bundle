@@ -10,7 +10,13 @@ use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use UnZeroUn\Datagrid\Action\Action;
+use UnZeroUn\Datagrid\Action\BatchAction;
+use UnZeroUn\Datagrid\Datagrid\Form\Model\DatagridBatchAction;
+use UnZeroUn\Datagrid\Datagrid\Form\Type\DatagridBatchActionType;
 use UnZeroUn\Sorter\Definition;
 use UnZeroUn\Sorter\Sorter;
 use UnZeroUn\Sorter\SorterFactory;
@@ -63,14 +69,29 @@ class Datagrid
     protected $paginationEnabled = true;
 
     /**
-     * @var string[][]
+     * @var Action[]
      */
     protected $actions = [];
 
     /**
-     * @var string[][]
+     * @var Action[]
      */
     protected $globalActions = [];
+
+    /**
+     * @var BatchAction[]
+     */
+    protected $batchActions = [];
+
+    /**
+     * @var FormInterface
+     */
+    private $batchActionForm;
+
+    /**
+     * @var FormView
+     */
+    private $batchActionFormView;
 
     /**
      * @var array
@@ -110,7 +131,7 @@ class Datagrid
         $this->filterBuilderUpdater = $filterBuilderUpdater;
     }
 
-    public function handleRequest(Request $request)
+    public function handleRequest(Request $request): ?Response
     {
         $qb           = $this->queryBuilder;
         $this->sorter = $this->sorterFactory->createSorter($this->sortDefinition);
@@ -128,13 +149,31 @@ class Datagrid
         );
 
         if (null !== $this->filterForm && $request->query->has($this->filterForm->getName())) {
-            $this->filterForm->handleRequest($request);
+            $this->filterForm->submit($request->query->get($this->filterForm->getName()));
             $this->filterBuilderUpdater->addFilterConditions($this->filterForm, $qb);
         }
 
         if ($this->isPaginationEnabled()) {
             $this->getPager()->setCurrentPage($request->query->get('page', 1));
         }
+
+        $batchActionForm = $this->getBatchActionForm();
+        if (null !== $batchActionForm) {
+            if ($batchActionForm->handleRequest($request) && $batchActionForm->isSubmitted()) {
+                if ($batchActionForm->isValid()) {
+                    /** @var DatagridBatchAction $data */
+                    $data = $batchActionForm->getData();
+
+                    $response = $data->getAction()->process($data->getItems());
+
+                    if ($response instanceof Response) {
+                        return $response;
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 
     public function isPaginationEnabled(): bool
@@ -156,11 +195,17 @@ class Datagrid
         return $this->columns;
     }
 
+    /**
+     * @return Action[]
+     */
     public function getActions(): array
     {
         return $this->actions;
     }
 
+    /**
+     * @return Action[]
+     */
     public function getGlobalActions(): array
     {
         return $this->globalActions;
@@ -189,6 +234,66 @@ class Datagrid
     public function getFilterForm(): ?FormInterface
     {
         return $this->filterForm;
+    }
+
+    /**
+     * @return BatchAction[]
+     */
+    public function getBatchActions(): array
+    {
+        return $this->batchActions;
+    }
+
+    public function getBatchActionForm(): ?FormInterface
+    {
+        if (null === $this->batchActionForm) {
+            if (count($this->batchActions) === 0) {
+                return null;
+            }
+
+            $this->batchActionForm = $this->formFactory->createNamed(
+                'batch_action',
+                DatagridBatchActionType::class,
+                null,
+                [
+                    'items'   => $this->getResults(),
+                    'actions' => $this->getBatchActions(),
+                    'method'  => 'POST',
+                ]
+            );
+        }
+
+        return $this->batchActionForm;
+    }
+
+    public function getBatchActionFormView(): ?FormView
+    {
+        if (null === $this->batchActionFormView) {
+            if (null === $this->getBatchActionForm()) {
+                return null;
+            }
+
+            $this->batchActionFormView = $this->getBatchActionForm()->createView();
+        }
+
+        return $this->batchActionFormView;
+    }
+
+    public function getBatchActionItemForm($item): ?FormView
+    {
+        $formView = $this->getBatchActionFormView();
+
+        if (null === $formView) {
+            return null;
+        }
+
+        foreach ($formView['items'] as $formItem) {
+            if ($formItem->vars['label'] === (string)$item) {
+                return $formItem;
+            }
+        }
+
+        return null;
     }
 
     /**

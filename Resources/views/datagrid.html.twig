@@ -9,31 +9,7 @@
 {% endblock %}
 
 {% block datagrid_list %}
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            {% for column in datagrid.columns %}
-                <th>
-                    {% if datagrid.sorter is not null and column.name in datagrid.sorter.fields %}
-                        {{ sorter_link(datagrid.sorter, column.name, column.label) }}
-                        {{ sorter_link(datagrid.sorter, column.name, '<i class="icon-arrow-up"></i>', 'ASC') }}
-                        {{ sorter_link(datagrid.sorter, column.name, '<i class="icon-arrow-down"></i>', 'DESC') }}
-                    {% else %}
-                        {{ column.label }}
-                    {% endif %}
-                </th>
-            {% endfor %}
-            {% if datagrid.actions %}
-                <th>Actions</th>
-            {% endif %}
-        </tr>
-        </thead>
-        <tbody>
-        {% for row in datagrid.results %}
-            {{ datagrid_row(datagrid, row) }}
-        {% endfor %}
-        </tbody>
-    </table>
+    {% include '@UnZeroUnDatagrid/datagrid/datagrid.html.twig' with {datagrid: datagrid} only %}
 {% endblock %}
 
 {% block datagrid_pager %}

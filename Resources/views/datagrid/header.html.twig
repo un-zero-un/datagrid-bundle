@@ -1,9 +1,14 @@
+{% import '@UnZeroUnDatagrid/datagrid_macros.html.twig' as datagrid_macros %}
+
 <div class="datagrid-header">
     <ul class="datagrid-gloc-actions">
         {% for action in actions %}
             <li>
-                <a class="btn" href="{{ path(action.route, action.options.route_params | default({})) }}">
-                    <i class="fa fa-{{ action.icon }}"></i> {{ action.label }}
+                <a class="btn" href="{{ action.url() }}">
+                    {% if action.icon is not null %}
+                        {{ datagrid_macros.action_icon(action.icon.type, action.icon.icon) }}
+                    {% endif %}
+                    {{ action.label }}
                 </a>
             </li>
         {% endfor %}
