@@ -6,7 +6,7 @@
             <li>
                 <a class="btn" href="{{ action.url() }}">
                     {% if action.icon is not null %}
-                        {{ datagrid_macros.action_icon(action.icon.type, action.icon.icon) }}
+                        {{ datagrid_icon(action.icon) }}
                     {% endif %}
                     {{ action.label }}
                 </a>

@@ -1,12 +1,10 @@
-{% import '@UnZeroUnDatagrid/datagrid_macros.html.twig' as datagrid_macros %}
-
 <div class="btn-group">
     {% for action in actions %}
         <a class="btn-sm {{ action.classes|join(' ') }}"
            href="{{ action.url([object]) }}" title="{{ action.label }}"
            data-object-title="{{ object }}" {{ datagrid_action_attributes(action.attributes) }}>
             {% if action.icon is not null %}
-                {{ datagrid_macros.action_icon(action.icon.type, action.icon.icon) }}
+                {{ datagrid_icon(action.icon) }}
             {% endif %}
             <span class="sr-only">{{ action.label }}</span>
         </a>
