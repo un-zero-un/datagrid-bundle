@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace UnZeroUn\Datagrid\Twig\Extension;
 
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
+use UnZeroUn\Datagrid\Action\ActionIcon;
 use UnZeroUn\Datagrid\Datagrid\Datagrid;
 use UnZeroUn\Datagrid\Datagrid\DatagridColumn;
 use Doctrine\Common\Collections\Collection;
@@ -51,6 +52,7 @@ class DatagridExtension extends AbstractExtension implements InitRuntimeInterfac
             new TwigFunction('datagrid_cell_value', [$this, 'displayCellValue'], ['is_safe' => ['html']]),
             new TwigFunction('datagrid_action_attributes', [$this, 'displayActionAttributes'], ['is_safe' => ['html']]),
             new TwigFunction('datagrid_header', [$this, 'displayHeader'], ['is_safe' => ['html']]),
+            new TwigFunction('datagrid_icon', [$this, 'displayIcon'], ['is_safe' => ['html']]),
         ];
     }
 
@@ -141,6 +143,22 @@ class DatagridExtension extends AbstractExtension implements InitRuntimeInterfac
                 'actions'  => $datagrid->getGlobalActions(),
             ]
         );
+    }
+
+    public function displayIcon(ActionIcon $icon): string
+    {
+        $context  = ['icon' => $icon];
+        $template = $this->twig->loadTemplate('@UnZeroUnDatagrid/datagrid/icons.html.twig');
+
+        $blockName = sprintf('icon_%s', $icon->getType());
+
+        if (!$template->hasBlock($blockName, $context)) {
+            throw new \RuntimeException(
+                sprintf('You have to define a block "%s" in template "%s"', $blockName, $template->getTemplateName())
+            );
+        }
+
+        return $template->renderBlock($blockName, $context);
     }
 
     private function getFqcnSanitized(object $object): string
