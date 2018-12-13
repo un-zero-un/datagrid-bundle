@@ -27,6 +27,13 @@ final class DatagridBuilder extends Datagrid
         return $this;
     }
 
+    public function setItemsPerPage(int $itemsPerPage): self
+    {
+        $this->itemsPerPage = $itemsPerPage;
+
+        return $this;
+    }
+
     public function addColumn(string $name, string $label, $valueAccessor, ?string $type = null): self
     {
         $resolveAccessor = function ($accessor): Accessor {
@@ -151,6 +158,7 @@ final class DatagridBuilder extends Datagrid
         $datagrid->processStatusKey  = $this->processStatusKey;
         $datagrid->overrideSort      = $this->overrideSort;
         $datagrid->batchActions      = $this->batchActions;
+        $datagrid->itemsPerPage      = $this->itemsPerPage;
 
         return $datagrid;
     }

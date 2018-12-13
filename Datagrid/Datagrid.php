@@ -84,6 +84,11 @@ class Datagrid
     protected $batchActions = [];
 
     /**
+     * @var int
+     */
+    protected $itemsPerPage = 25;
+
+    /**
      * @var FormInterface
      */
     private $batchActionForm;
@@ -220,7 +225,7 @@ class Datagrid
     {
         if ($this->isPaginationEnabled() && null === $this->pager) {
             $this->pager = new Pagerfanta(new DoctrineORMAdapter($this->queryBuilder));
-            $this->pager->setMaxPerPage(25);
+            $this->pager->setMaxPerPage($this->itemsPerPage);
         }
 
         return $this->pager;
