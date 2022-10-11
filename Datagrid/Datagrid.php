@@ -7,6 +7,7 @@ namespace UnZeroUn\Datagrid\Datagrid;
 use Doctrine\ORM\QueryBuilder;
 use Lexik\Bundle\FormFilterBundle\Filter\FilterBuilderUpdater;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -224,7 +225,7 @@ class Datagrid
     public function getPager(): ?Pagerfanta
     {
         if ($this->isPaginationEnabled() && null === $this->pager) {
-            $this->pager = new Pagerfanta(new DoctrineORMAdapter($this->queryBuilder));
+            $this->pager = new Pagerfanta(new QueryAdapter($this->queryBuilder));
             $this->pager->setMaxPerPage($this->itemsPerPage);
         }
 

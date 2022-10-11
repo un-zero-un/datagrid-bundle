@@ -25,7 +25,9 @@
         "lexik/form-filter-bundle":        "^7.0.3",
         "doctrine/orm":                    "^2.13.3",
         "twig/extensions":                 "^1.5",
-        "babdev/pagerfanta-bundle":        "^3.7.0"
+        "babdev/pagerfanta-bundle":        "^3.7.0",
+        "pagerfanta/doctrine-orm-adapter": "^3.6",
+        "pagerfanta/twig": "^3.6"
     },
     "autoload":    {
         "psr-4": {
