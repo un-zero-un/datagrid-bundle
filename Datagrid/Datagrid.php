@@ -160,7 +160,7 @@ class Datagrid
         }
 
         if ($this->isPaginationEnabled()) {
-            $this->getPager()->setCurrentPage($request->query->get('page', 1));
+            $this->getPager()->setCurrentPage((int)$request->query->get('page', 1));
         }
 
         $batchActionForm = $this->getBatchActionForm();
